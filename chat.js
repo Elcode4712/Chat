@@ -6,21 +6,32 @@ let selectedQuoteNumber = null;
 let chatsCache = [];
 let quotesCache = [];
 
-/* INIT */
+/* INIT 
 ZOHO.CREATOR.init().then(() => {
   loadChatSessions();
-});
+}); */
 
 /* SIDEBAR CHATS */
 function loadChatSessions() {
-  ZOHO.CREATOR.API.getAllRecords({
-    appName,
-    formName: "Chat_Session"
+  ZOHO.CREATOR.API.getRecords({
+    app_name: appName,
+    report_name: "All_Chats"
   }).then(res => {
     chatsCache = res.data || [];
     renderChatList();
   });
 }
+
+function loadQuoteRequests() {
+var config = {
+  app_name: appName,
+  report_name: "QR_Status_by_Sales_Person"
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
+  console.log(response);
+});
+}
+
 
 function renderChatList() {
   const list = document.getElementById("chatList");
@@ -194,3 +205,4 @@ function sendMessage() {
     loadChatSessions();
   });
 }
+
