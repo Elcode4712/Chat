@@ -18,7 +18,7 @@ ZOHO.CREATOR.init().then(() => {
 function loadAllQuotes() {
   ZOHO.CREATOR.API.getAllRecords({
     appName,
-    formName: "Quote_Request"
+    formName: "Form_A"
   }).then(res => {
     allQuotes = res.data;
     renderQuoteOptions(allQuotes);
@@ -125,7 +125,7 @@ function sendMessage() {
 
   ZOHO.CREATOR.API.addRecord({
     appName,
-    formName: "Quote_Chat",
+    formName: "Chat",
     data: {
       Quote_Request: currentQuoteId,
       Message: text,
@@ -136,3 +136,4 @@ function sendMessage() {
     loadMessages();
   });
 }
+
