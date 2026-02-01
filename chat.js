@@ -29,7 +29,7 @@ var config = {
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
   console.log(response);
-  Alert (response);
+  Alert (String(response));
 });
 }
 
@@ -206,5 +206,6 @@ function sendMessage() {
     loadChatSessions();
   });
 }
+
 
 
