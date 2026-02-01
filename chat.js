@@ -1,23 +1,17 @@
 let appName = "procurement-software";
 
 let selectedQuoteId = null;
-let selectedQuoteName = null;
+let selectedQuoteNumber = null;
 
 let chatsCache = [];
 let quotesCache = [];
 
-/* ---------------- INIT ---------------- */
+/* INIT 
 ZOHO.CREATOR.init().then(() => {
   loadChatSessions();
-});
+}); */
 
-/* ---------------- ELEMENTS ---------------- */
-const dropdown = document.getElementById("quoteDropdown");
-const quoteList = document.getElementById("quoteList");
-const quoteSearch = document.getElementById("quoteSearch");
-const chatMessages = document.getElementById("chatMessages");
-
-/* ---------------- SIDEBAR ---------------- */
+/* SIDEBAR CHATS */
 function loadChatSessions() {
   ZOHO.CREATOR.API.getRecords({
     app_name: appName,
@@ -27,6 +21,18 @@ function loadChatSessions() {
     renderChatList();
   });
 }
+
+function loadQuoteRequests() {
+var config = {
+  app_name: appName,
+  report_name: "QR_Status_by_Sales_Person"
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
+  recordArr = response.data;
+  console.log(recordArr);
+});
+}
+
 
 function renderChatList() {
   const list = document.getElementById("chatList");
@@ -51,65 +57,74 @@ function renderChatList() {
   });
 }
 
-/* ---------------- NEW CHAT FLOW ---------------- */
-function loadQuoteRequests() {
-  dropdown.classList.remove("hidden");
-  quoteSearch.value = "";
-  quoteList.innerHTML = "<li>Loading...</li>";
+/* NEW CHAT */
+function openNewChat() {
+  selectedQuoteId = null;
+  selectedQuoteNumber = null;
 
-  ZOHO.CREATOR.DATA.getRecords({
-    app_name: appName,
-    report_name: "QR_Status_by_Sales_Person"
+  document.getElementById("chatHeader").innerText = "Start a new chat";
+  document.getElementById("chatMessages").innerHTML = "";
+  document.getElementById("quotePicker").classList.remove("hidden");
+
+  if (quotesCache.length === 0) {
+    loadQuotes();
+  }
+}
+
+/* LOAD QUOTES */
+function loadQuotes() {
+  ZOHO.CREATOR.API.getAllRecords({
+    appName,
+    formName: "Form_A"
   }).then(res => {
     quotesCache = res.data || [];
-    renderQuotes(quotesCache);
+    renderQuoteDropdown(quotesCache);
   });
 }
 
-function renderQuotes(list) {
-  quoteList.innerHTML = "";
+function renderQuoteDropdown(data) {
+  const dropdown = document.getElementById("quoteDropdown");
+  dropdown.innerHTML = "";
 
-  if (list.length === 0) {
-    quoteList.innerHTML = "<li>No results</li>";
-    return;
-  }
-
-  list.forEach(q => {
-    const li = document.createElement("li");
-    li.textContent = q.Quote_Name || q.Name || q.display_value;
-    li.onclick = () => startChat(q);
-    quoteList.appendChild(li);
+  data.forEach(q => {
+    const opt = document.createElement("option");
+    opt.value = q.ID;
+    opt.text = q.Quote_Number;
+    dropdown.appendChild(opt);
   });
 }
 
-/* ---------------- SEARCH ---------------- */
-quoteSearch.addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
+function filterQuotes() {
+  const term = document.getElementById("quoteSearch")
+    .value.toLowerCase();
 
   const filtered = quotesCache.filter(q =>
-    (q.Quote_Name || "").toLowerCase().includes(value) ||
-    (q.ID || "").toLowerCase().includes(value)
+    q.Quote_Number.toLowerCase().includes(term)
   );
 
-  renderQuotes(filtered);
-});
+  renderQuoteDropdown(filtered);
+}
 
-/* ---------------- START CHAT ---------------- */
-function startChat(quote) {
-  selectedQuoteId = quote.ID;
-  selectedQuoteName = quote.Quote_Name || quote.display_value;
+/* SELECT QUOTE */
+function selectQuote() {
+  const dropdown = document.getElementById("quoteDropdown");
 
-  dropdown.classList.add("hidden");
-  chatMessages.innerHTML = "";
+  selectedQuoteId = dropdown.value;
+  selectedQuoteNumber =
+    dropdown.options[dropdown.selectedIndex].text;
+
+  document.getElementById("quotePicker").classList.add("hidden");
+  document.getElementById("chatHeader").innerText =
+    "Quote: " + selectedQuoteNumber;
 
   createOrLoadChatSession();
 }
 
-/* ---------------- CHAT SESSION ---------------- */
+/* CHAT SESSION */
 function createOrLoadChatSession() {
   ZOHO.CREATOR.API.getAllRecords({
     appName,
-    formName: "Chat",
+    formName: "Form_A",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
 
@@ -132,40 +147,44 @@ function createOrLoadChatSession() {
   });
 }
 
-/* ---------------- EXISTING CHAT ---------------- */
-function openExistingChat(id, name) {
+/* EXISTING CHAT */
+function openExistingChat(id, number) {
   selectedQuoteId = id;
-  selectedQuoteName = name;
+  selectedQuoteNumber = number;
 
-  dropdown.classList.add("hidden");
+  document.getElementById("quotePicker").classList.add("hidden");
+  document.getElementById("chatHeader").innerText =
+    "Quote: " + number;
+
   loadMessages();
   loadChatSessions();
 }
 
-/* ---------------- MESSAGES ---------------- */
+/* MESSAGES */
 function loadMessages() {
   ZOHO.CREATOR.API.getAllRecords({
     appName,
     formName: "Quote_Chat",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
-    chatMessages.innerHTML = "";
+    const box = document.getElementById("chatMessages");
+    box.innerHTML = "";
 
     (res.data || []).forEach(m => {
       const div = document.createElement("div");
       div.className = "msg " + m.Sender_Type;
       div.innerText = m.Message;
-      chatMessages.appendChild(div);
+      box.appendChild(div);
     });
 
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    box.scrollTop = box.scrollHeight;
   });
 }
 
-/* ---------------- SEND MESSAGE ---------------- */
+/* SEND MESSAGE */
 function sendMessage() {
   if (!selectedQuoteId) {
-    alert("Select a Quote Request first");
+    alert("Please select a Quote Request first.");
     return;
   }
 
@@ -187,3 +206,6 @@ function sendMessage() {
     loadChatSessions();
   });
 }
+
+
+

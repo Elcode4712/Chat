@@ -131,38 +131,3 @@ body {
 .hidden {
   display: none;
 }
-
-.hidden {
-  display: none;
-}
-
-.dropdown {
-  width: 300px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  background: #fff;
-}
-
-#quoteSearch {
-  width: 100%;
-  padding: 6px;
-  margin-bottom: 8px;
-}
-
-#quoteList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-#quoteList li {
-  padding: 8px;
-  cursor: pointer;
-}
-
-#quoteList li:hover {
-  background: #f0f0f0;
-}
-

@@ -14,17 +14,23 @@
     <div id="chatList"></div>
   </div>
 
-  <button id="newChatBtn">New Chat</button>
+  <!-- Main Chat -->
+  <div class="chat-main">
 
-<div id="quoteDropdown" class="dropdown hidden">
-  <input
-    type="text"
-    id="quoteSearch"
-    placeholder="Search by name or ID..."
-  />
+    <div id="chatHeader" class="chat-header">
+      Select a chat
+    </div>
 
-  <ul id="quoteList"></ul>
-</div>
+    <!-- Quote picker -->
+    <div id="quotePicker" class="quote-picker hidden">
+      <input
+        type="text"
+        id="quoteSearch"
+        placeholder="Search Quote Request..."
+        onkeyup="filterQuotes()"
+      />
+      <select id="quoteDropdown" size="6" onchange="selectQuote()"></select>
+    </div>
 
     <div id="chatMessages" class="chat-messages"></div>
 
