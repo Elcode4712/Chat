@@ -28,10 +28,69 @@ var config = {
   report_name: "QR_Status_by_Sales_Person"
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
-  recordArr = response.data;
+  quoteResponse = response;
   console.log(recordArr);
 });
 }
+
+const newChatBtn = document.getElementById("newChatBtn");
+const dropdown = document.getElementById("quoteDropdown");
+const quoteList = document.getElementById("quoteList");
+const quoteSearch = document.getElementById("quoteSearch");
+
+const quotes = quoteResponse.data;
+
+// Show dropdown
+newChatBtn.addEventListener("click", () => {
+  dropdown.classList.toggle("hidden");
+  renderQuotes(quotes);
+});
+
+// Render list
+function renderQuotes(list) {
+  quoteList.innerHTML = "";
+
+  list.forEach(quote => {
+    const li = document.createElement("li");
+    li.textContent = quote.name; // display ONLY name
+    li.dataset.id = quote.id;
+
+    li.addEventListener("click", () => {
+      startChat(quote);
+    });
+
+    quoteList.appendChild(li);
+  });
+}
+
+// Search by name OR ID
+quoteSearch.addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
+
+  const filtered = quotes.filter(q =>
+    q.name.toLowerCase().includes(value) ||
+    q.id.toLowerCase().includes(value)
+  );
+
+  renderQuotes(filtered);
+});
+
+// Start chat under selected quote
+function startChat(quote) {
+  dropdown.classList.add("hidden");
+  quoteSearch.value = "";
+
+  console.log("Starting chat for:", quote);
+
+  /*
+    HERE is where you:
+    - Create chat session
+    - Save selected quote ID
+    - Load messages for that quote
+    - Add it to sidebar chat list
+  */
+}
+
 
 
 function renderChatList() {
