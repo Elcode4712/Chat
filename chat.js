@@ -1,17 +1,23 @@
 let appName = "procurement-software";
 
 let selectedQuoteId = null;
-let selectedQuoteNumber = null;
+let selectedQuoteName = null;
 
 let chatsCache = [];
 let quotesCache = [];
 
-/* INIT 
+/* ---------------- INIT ---------------- */
 ZOHO.CREATOR.init().then(() => {
   loadChatSessions();
-}); */
+});
 
-/* SIDEBAR CHATS */
+/* ---------------- ELEMENTS ---------------- */
+const dropdown = document.getElementById("quoteDropdown");
+const quoteList = document.getElementById("quoteList");
+const quoteSearch = document.getElementById("quoteSearch");
+const chatMessages = document.getElementById("chatMessages");
+
+/* ---------------- SIDEBAR ---------------- */
 function loadChatSessions() {
   ZOHO.CREATOR.API.getRecords({
     app_name: appName,
@@ -21,77 +27,6 @@ function loadChatSessions() {
     renderChatList();
   });
 }
-
-function loadQuoteRequests() {
-var config = {
-  app_name: appName,
-  report_name: "QR_Status_by_Sales_Person"
-};
-ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
-  quoteResponse = response;
-  console.log(recordArr);
-});
-}
-
-const newChatBtn = document.getElementById("newChatBtn");
-const dropdown = document.getElementById("quoteDropdown");
-const quoteList = document.getElementById("quoteList");
-const quoteSearch = document.getElementById("quoteSearch");
-
-const quotes = quoteResponse.data;
-
-// Show dropdown
-newChatBtn.addEventListener("click", () => {
-  dropdown.classList.toggle("hidden");
-  renderQuotes(quotes);
-});
-
-// Render list
-function renderQuotes(list) {
-  quoteList.innerHTML = "";
-
-  list.forEach(quote => {
-    const li = document.createElement("li");
-    li.textContent = quote.name; // display ONLY name
-    li.dataset.id = quote.id;
-
-    li.addEventListener("click", () => {
-      startChat(quote);
-    });
-
-    quoteList.appendChild(li);
-  });
-}
-
-// Search by name OR ID
-quoteSearch.addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
-
-  const filtered = quotes.filter(q =>
-    q.name.toLowerCase().includes(value) ||
-    q.id.toLowerCase().includes(value)
-  );
-
-  renderQuotes(filtered);
-});
-
-// Start chat under selected quote
-function startChat(quote) {
-  dropdown.classList.add("hidden");
-  quoteSearch.value = "";
-
-  console.log("Starting chat for:", quote);
-
-  /*
-    HERE is where you:
-    - Create chat session
-    - Save selected quote ID
-    - Load messages for that quote
-    - Add it to sidebar chat list
-  */
-}
-
-
 
 function renderChatList() {
   const list = document.getElementById("chatList");
@@ -116,74 +51,65 @@ function renderChatList() {
   });
 }
 
-/* NEW CHAT */
-function openNewChat() {
-  selectedQuoteId = null;
-  selectedQuoteNumber = null;
+/* ---------------- NEW CHAT FLOW ---------------- */
+function loadQuoteRequests() {
+  dropdown.classList.remove("hidden");
+  quoteSearch.value = "";
+  quoteList.innerHTML = "<li>Loading...</li>";
 
-  document.getElementById("chatHeader").innerText = "Start a new chat";
-  document.getElementById("chatMessages").innerHTML = "";
-  document.getElementById("quotePicker").classList.remove("hidden");
-
-  if (quotesCache.length === 0) {
-    loadQuotes();
-  }
-}
-
-/* LOAD QUOTES */
-function loadQuotes() {
-  ZOHO.CREATOR.API.getAllRecords({
-    appName,
-    formName: "Form_A"
+  ZOHO.CREATOR.DATA.getRecords({
+    app_name: appName,
+    report_name: "QR_Status_by_Sales_Person"
   }).then(res => {
     quotesCache = res.data || [];
-    renderQuoteDropdown(quotesCache);
+    renderQuotes(quotesCache);
   });
 }
 
-function renderQuoteDropdown(data) {
-  const dropdown = document.getElementById("quoteDropdown");
-  dropdown.innerHTML = "";
+function renderQuotes(list) {
+  quoteList.innerHTML = "";
 
-  data.forEach(q => {
-    const opt = document.createElement("option");
-    opt.value = q.ID;
-    opt.text = q.Quote_Number;
-    dropdown.appendChild(opt);
+  if (list.length === 0) {
+    quoteList.innerHTML = "<li>No results</li>";
+    return;
+  }
+
+  list.forEach(q => {
+    const li = document.createElement("li");
+    li.textContent = q.Quote_Name || q.Name || q.display_value;
+    li.onclick = () => startChat(q);
+    quoteList.appendChild(li);
   });
 }
 
-function filterQuotes() {
-  const term = document.getElementById("quoteSearch")
-    .value.toLowerCase();
+/* ---------------- SEARCH ---------------- */
+quoteSearch.addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
 
   const filtered = quotesCache.filter(q =>
-    q.Quote_Number.toLowerCase().includes(term)
+    (q.Quote_Name || "").toLowerCase().includes(value) ||
+    (q.ID || "").toLowerCase().includes(value)
   );
 
-  renderQuoteDropdown(filtered);
-}
+  renderQuotes(filtered);
+});
 
-/* SELECT QUOTE */
-function selectQuote() {
-  const dropdown = document.getElementById("quoteDropdown");
+/* ---------------- START CHAT ---------------- */
+function startChat(quote) {
+  selectedQuoteId = quote.ID;
+  selectedQuoteName = quote.Quote_Name || quote.display_value;
 
-  selectedQuoteId = dropdown.value;
-  selectedQuoteNumber =
-    dropdown.options[dropdown.selectedIndex].text;
-
-  document.getElementById("quotePicker").classList.add("hidden");
-  document.getElementById("chatHeader").innerText =
-    "Quote: " + selectedQuoteNumber;
+  dropdown.classList.add("hidden");
+  chatMessages.innerHTML = "";
 
   createOrLoadChatSession();
 }
 
-/* CHAT SESSION */
+/* ---------------- CHAT SESSION ---------------- */
 function createOrLoadChatSession() {
   ZOHO.CREATOR.API.getAllRecords({
     appName,
-    formName: "Form_A",
+    formName: "Chat",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
 
@@ -206,44 +132,40 @@ function createOrLoadChatSession() {
   });
 }
 
-/* EXISTING CHAT */
-function openExistingChat(id, number) {
+/* ---------------- EXISTING CHAT ---------------- */
+function openExistingChat(id, name) {
   selectedQuoteId = id;
-  selectedQuoteNumber = number;
+  selectedQuoteName = name;
 
-  document.getElementById("quotePicker").classList.add("hidden");
-  document.getElementById("chatHeader").innerText =
-    "Quote: " + number;
-
+  dropdown.classList.add("hidden");
   loadMessages();
   loadChatSessions();
 }
 
-/* MESSAGES */
+/* ---------------- MESSAGES ---------------- */
 function loadMessages() {
   ZOHO.CREATOR.API.getAllRecords({
     appName,
     formName: "Quote_Chat",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
-    const box = document.getElementById("chatMessages");
-    box.innerHTML = "";
+    chatMessages.innerHTML = "";
 
     (res.data || []).forEach(m => {
       const div = document.createElement("div");
       div.className = "msg " + m.Sender_Type;
       div.innerText = m.Message;
-      box.appendChild(div);
+      chatMessages.appendChild(div);
     });
 
-    box.scrollTop = box.scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   });
 }
 
-/* SEND MESSAGE */
+/* ---------------- SEND MESSAGE ---------------- */
 function sendMessage() {
   if (!selectedQuoteId) {
-    alert("Please select a Quote Request first.");
+    alert("Select a Quote Request first");
     return;
   }
 
@@ -265,6 +187,3 @@ function sendMessage() {
     loadChatSessions();
   });
 }
-
-
-
