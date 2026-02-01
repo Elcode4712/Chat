@@ -28,8 +28,7 @@ var config = {
   report_name: "QR_Status_by_Sales_Person"
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
-  console.log(String(response));
-  Alert (String(response));
+  console.log(response);
 });
 }
 
