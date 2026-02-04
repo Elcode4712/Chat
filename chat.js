@@ -136,17 +136,23 @@ function createOrLoadChatSession() {
       return;
     }
 
-    ZOHO.CREATOR.API.addRecord({
-      app_name: appName,
-      formName: "Chat",
-      data: {
-        Quote_Request: selectedQuoteId
-      }
-    }).then(() => {
-      loadChatSessions();
-      loadMessages();
-    });
+    var config = {
+  app_name: appName,
+  form_name: "Chat",
+  payload: {
+    "data": {
+      "Quote_Request_Number": selectedQuoteId
+   }
+  }
+};
+ZOHO.CREATOR.DATA.addRecords(config).then(function (response) {
+  if (response.code == 3000) {
+    console.log(response);
+    loadMessages();
+    loadChatSessions();
+  }
   });
+});
 }
 
 /* EXISTING CHAT */
