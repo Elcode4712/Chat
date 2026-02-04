@@ -67,8 +67,22 @@ function openNewChat() {
   document.getElementById("quotePicker").classList.remove("hidden");
 
   if (quotesCache.length === 0) {
-    loadQuotes();
+    loadQuoteRequests();
   }
+}
+
+/* Load Quote Requests */
+
+function loadQuoteRequests() {
+var config = {
+  app_name: appName,
+  report_name: "QR_Status_by_Sales_Person"
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
+   quotesCache = response.data || [];
+  renderQuoteDropdown(quotesCache);
+  console.log(quotesCache);
+});
 }
 
 /* LOAD QUOTES */
