@@ -22,18 +22,6 @@ function loadChatSessions() {
   });
 }
 
-function loadQuoteRequests() {
-var config = {
-  app_name: appName,
-  report_name: "QR_Status_by_Sales_Person"
-};
-ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
-  let recordArr = response.data;
-  console.log(recordArr);
-});
-}
-
-
 function renderChatList() {
   const list = document.getElementById("chatList");
   list.innerHTML = "";
