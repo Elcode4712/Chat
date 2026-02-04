@@ -91,7 +91,7 @@ function renderQuoteDropdown(data) {
   data.forEach(q => {
     const opt = document.createElement("option");
     opt.value = q.ID;
-    opt.text = q.Category;
+    opt.text = q.Quote_Request_Number;
     dropdown.appendChild(opt);
   });
 }
