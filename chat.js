@@ -208,22 +208,13 @@ function sendMessage() {
 ZOHO.CREATOR.DATA.addRecords(config).then(function (response) {
   if (response.code == 3000) {
     console.log(response);
-  }
-});
-
-  ZOHO.CREATOR.API.addRecord({
-    appName,
-    formName: "Quote_Chat",
-    data: {
-      Quote_Request: selectedQuoteId,
-      Message: text,
-      Sender_Type: "Customer"
-    }
-  }).then(() => {
     input.value = "";
     loadMessages();
     loadChatSessions();
-  });
+  }
+});
+
+
 }
 
 
