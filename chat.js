@@ -124,12 +124,15 @@ function selectQuote() {
 
 /* CHAT SESSION */
 function createOrLoadChatSession() {
-  ZOHO.CREATOR.API.getAllRecords({
-    appName,
-    formName: "Form_A",
-    criteria: `(Quote_Request == "${selectedQuoteId}")`
-  }).then(res => {
-
+  var config = {
+  app_name: appName,
+  report_name: "Chat",
+  criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
+  console.log(response);
+});
+  
     if (res.data && res.data.length > 0) {
       loadMessages();
       loadChatSessions();
@@ -152,7 +155,6 @@ ZOHO.CREATOR.DATA.addRecords(config).then(function (response) {
     loadChatSessions();
   }
   });
-});
 }
 
 /* EXISTING CHAT */
