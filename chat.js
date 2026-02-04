@@ -64,10 +64,10 @@ function openNewChat() {
 function loadQuoteRequests() {
 var config = {
   app_name: appName,
-  report_name: "QR_Status_by_Sales_Person"
+  report_name: "Form_A_Report"
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
-   quotesCache = response.data || [];
+   quotesCache = response.data;
   renderQuoteDropdown(quotesCache);
   console.log(quotesCache);
 });
