@@ -90,8 +90,8 @@ function renderQuoteDropdown(data) {
 
   data.forEach(q => {
     const opt = document.createElement("option");
-    opt.value = q.Category;
-    opt.text = q.ID;
+    opt.value = q.ID;
+    opt.text = q.Category;
     dropdown.appendChild(opt);
   });
 }
