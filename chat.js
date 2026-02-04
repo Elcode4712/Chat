@@ -13,13 +13,16 @@ ZOHO.CREATOR.init().then(() => {
 
 /* SIDEBAR CHATS */
 function loadChatSessions() {
-  ZOHO.CREATOR.API.getRecords({
-    app_name: appName,
-    report_name: "All_Chats"
-  }).then(res => {
-    chatsCache = res.data || [];
+   var config = {
+  app_name: appName,
+  report_name: "Chat",
+  criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
+  console.log(response);
+  chatsCache = res.data || [];
     renderChatList();
-  });
+});
 }
 
 function renderChatList() {
@@ -172,12 +175,14 @@ function openExistingChat(id, number) {
 
 /* MESSAGES */
 function loadMessages() {
-  ZOHO.CREATOR.API.getAllRecords({
-    appName,
-    formName: "Quote_Chat",
-    criteria: `(Quote_Request == "${selectedQuoteId}")`
-  }).then(res => {
-    const box = document.getElementById("chatMessages");
+  var config = {
+  app_name: appName,
+  report_name: "Chat",
+  criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
+};
+ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
+  console.log(response);
+  const box = document.getElementById("chatMessages");
     box.innerHTML = "";
 
     (res.data || []).forEach(m => {
@@ -188,7 +193,7 @@ function loadMessages() {
     });
 
     box.scrollTop = box.scrollHeight;
-  });
+});
 }
 
 /* SEND MESSAGE */
