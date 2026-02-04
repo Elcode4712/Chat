@@ -19,7 +19,7 @@ function loadChatSessions() {
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
-  console.log(response);
+  console.log(res);
   chatsCache = res.data || [];
     renderChatList();
 });
