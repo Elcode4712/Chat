@@ -85,7 +85,7 @@ ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
 });
 }
 
-/* LOAD QUOTES */
+/* LOAD QUOTES 
 function loadQuotes() {
   ZOHO.CREATOR.API.getAllRecords({
     app_name: appName,
@@ -94,7 +94,7 @@ function loadQuotes() {
     quotesCache = res.data || [];
     renderQuoteDropdown(quotesCache);
   });
-}
+}*/
 
 function renderQuoteDropdown(data) {
   const dropdown = document.getElementById("quoteDropdown");
