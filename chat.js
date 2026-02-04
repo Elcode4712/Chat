@@ -101,7 +101,7 @@ function filterQuotes() {
     .value.toLowerCase();
 
   const filtered = quotesCache.filter(q =>
-    q.Quote_Number.toLowerCase().includes(term)
+    q.Quote_Request_Number.toLowerCase().includes(term)
   );
 
   renderQuoteDropdown(filtered);
