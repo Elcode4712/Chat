@@ -135,15 +135,14 @@ function createOrLoadChatSession() {
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
   let ress = res;
   console.log(res);
-});
-  
-    if (ress.data && ress.data.length > 0) {
+  if (res.data && res.data.length > 0) {
       loadMessages();
       loadChatSessions();
       return;
     }
+});
 
-    var config = {
+  var config = {
   app_name: appName,
   form_name: "Chat",
   payload: {
