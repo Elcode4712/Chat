@@ -68,7 +68,7 @@ var config = {
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
    quotesCache = response.data || [];
-  renderQuoteDropdown(quotesCache);
+  renderQuoteDropdown(quotesCache.Category);
   console.log(quotesCache.Category);
 });
 }
