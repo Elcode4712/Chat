@@ -68,8 +68,8 @@ var config = {
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (response) {
    quotesCache = response.data || [];
-  renderQuoteDropdown(quotesCache.Category);
-  console.log(quotesCache.Category);
+  renderQuoteDropdown(quotesCache);
+  console.log(quotesCache);
 });
 }
 
@@ -90,8 +90,8 @@ function renderQuoteDropdown(data) {
 
   data.forEach(q => {
     const opt = document.createElement("option");
-    opt.value = q.ID;
-    opt.text = q.Quote_Number;
+    opt.value = q.Category;
+    opt.text = q.ID;
     dropdown.appendChild(opt);
   });
 }
