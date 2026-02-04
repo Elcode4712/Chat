@@ -125,7 +125,7 @@ function selectQuote() {
 /* CHAT SESSION */
 function createOrLoadChatSession() {
   ZOHO.CREATOR.API.getAllRecords({
-    appName,
+    app_name: appName,
     formName: "Form_A",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
@@ -137,7 +137,7 @@ function createOrLoadChatSession() {
     }
 
     ZOHO.CREATOR.API.addRecord({
-      appName,
+      app_name: appName,
       formName: "Chat",
       data: {
         Quote_Request: selectedQuoteId
