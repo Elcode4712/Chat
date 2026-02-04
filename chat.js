@@ -181,7 +181,7 @@ function loadMessages() {
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
-  console.log(response);
+  console.log(res);
   const box = document.getElementById("chatMessages");
     box.innerHTML = "";
 
