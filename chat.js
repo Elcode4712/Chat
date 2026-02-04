@@ -133,10 +133,11 @@ function createOrLoadChatSession() {
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
-  console.log(response);
+  let ress = res;
+  console.log(res);
 });
   
-    if (res.data && res.data.length > 0) {
+    if (ress.data && ress.data.length > 0) {
       loadMessages();
       loadChatSessions();
       return;
