@@ -74,8 +74,8 @@ function openNewChat() {
 /* LOAD QUOTES */
 function loadQuotes() {
   ZOHO.CREATOR.API.getAllRecords({
-    appName,
-    formName: "Form_A"
+    app_name: appName,
+  report_name: "QR_Status_by_Sales_Person"
   }).then(res => {
     quotesCache = res.data || [];
     renderQuoteDropdown(quotesCache);
