@@ -125,7 +125,7 @@ function selectQuote() {
 /* CHAT SESSION */
 function createOrLoadChatSession() {
   ZOHO.CREATOR.API.getAllRecords({
-    app_name: appName,
+    appName,
     formName: "Form_A",
     criteria: `(Quote_Request == "${selectedQuoteId}")`
   }).then(res => {
@@ -193,6 +193,23 @@ function sendMessage() {
   const input = document.getElementById("messageBox");
   const text = input.value.trim();
   if (!text) return;
+
+  var config = {
+  app_name: appName,
+  form_name: "Chat",
+  payload: {
+    "data": {
+      "Quote_Request_Number": selectedQuoteId,
+      "Message": text,
+      "Sender_Type": "User"
+   }
+  }
+};
+ZOHO.CREATOR.DATA.addRecords(config).then(function (response) {
+  if (response.code == 3000) {
+    console.log(response);
+  }
+});
 
   ZOHO.CREATOR.API.addRecord({
     appName,
