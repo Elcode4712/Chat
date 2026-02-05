@@ -6,12 +6,23 @@
     <script src="https://js.zohostatic.com/creator/widgets/version/2.0/widgetsdk-min.js"></script>
   </head>
   <body>
-<div class="chat-app">
+<div class="app-container">
 
-  <!-- Sidebar -->
+  <!-- Slim Icon Sidebar -->
+  <div class="icon-bar">
+    <div class="logo">💬</div>
+    <div class="icon">🏠</div>
+    <div class="icon">📁</div>
+    <div class="icon">⚙️</div>
+  </div>
+
+  <!-- Chat List Sidebar -->
   <div class="chat-sidebar">
-    <button class="new-chat-btn" onclick="openNewChat()">+ New Chat</button>
-    <div id="chatList"></div>
+    <div class="sidebar-header">
+      <input class="chat-search" placeholder="Search chat..." />
+      <button class="new-chat-btn" onclick="openNewChat()">+ New Chat</button>
+    </div>
+    <div id="chatList" class="chat-list"></div>
   </div>
 
   <!-- Main Chat -->
@@ -21,7 +32,7 @@
       Select a chat
     </div>
 
-    <!-- Quote picker -->
+    <!-- Quote Picker Modal Dropdown -->
     <div id="quotePicker" class="quote-picker hidden">
       <input
         type="text"
@@ -29,7 +40,7 @@
         placeholder="Search Quote Request..."
         onkeyup="filterQuotes()"
       />
-      <select id="quoteDropdown" size="6" onchange="selectQuote()"></select>
+      <div id="quoteDropdown" class="dropdown-list"></div>
     </div>
 
     <div id="chatMessages" class="chat-messages"></div>
@@ -40,7 +51,15 @@
     </div>
 
   </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <h4>Chat Info</h4>
+    <div id="chatDetails">No chat selected</div>
+  </div>
+
 </div>
+
 <script src="chat.js"></script>
   </body>
 </html>
