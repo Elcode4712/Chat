@@ -32,7 +32,7 @@ function renderChatList() {
   chatsCache.forEach(chat => {
     const div = document.createElement("div");
     div.className = "chat-item";
-    div.innerText = chat.Quote_Request_Number.display_value;
+    div.innerText = chat.Quote_Request_Number.Quote_Request_Number;
 
     if (chat.Quote_Request_Number.ID === selectedQuoteId) {
       div.classList.add("active");
@@ -41,7 +41,7 @@ function renderChatList() {
     div.onclick = () =>
       openExistingChat(
         chat.Quote_Request_Number.ID,
-        chat.Quote_Request_Number.display_value
+        chat.Quote_Request_Number.Quote_Request_Number
       );
 
     list.appendChild(div);
