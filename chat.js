@@ -16,7 +16,7 @@ function loadChatSessions() {
    var config = {
   app_name: appName,
   report_name: "All_Chats",
-  criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
+  //criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
   console.log(res);
@@ -130,7 +130,7 @@ function createOrLoadChatSession() {
   var config = {
   app_name: appName,
   report_name: "All_Chats",
-  criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
+ // criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
   let ress = res;
@@ -178,7 +178,7 @@ function loadMessages() {
   var config = {
   app_name: appName,
   report_name: "All_Chats",
-  criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
+  //criteria: `(Quote_Request_Number == "${Number(selectedQuoteId)}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
   console.log(res);
