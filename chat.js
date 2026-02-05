@@ -40,8 +40,8 @@ function renderChatList() {
 
     div.onclick = () =>
       openExistingChat(
-        chat.Quote_Request.ID,
-        chat.Quote_Request.display_value
+        chat.Quote_Request_Number.ID,
+        chat.Quote_Request_Number.display_value
       );
 
     list.appendChild(div);
