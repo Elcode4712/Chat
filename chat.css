@@ -27,7 +27,7 @@ border-bottom:1px solid #eef3f0;
 }
 
 .chat-search{
-width:70%;
+width:90%;
 padding:10px;
 margin-bottom:8px;
 border:1px solid #e1e8e3;
@@ -46,7 +46,7 @@ font-weight:600;
 }
 
 .chat-list{
-/*overflow-y:auto;*/
+overflow-y:auto;
 flex:1;
 }
 
@@ -81,7 +81,7 @@ font-weight:600;
 
 .chat-messages{
 flex:1;
-/*overflow-y:auto;*/
+overflow-y:auto;
 padding:14px;
 background:#f9fbfa;
 z-index: 1;
@@ -158,7 +158,7 @@ border-radius:6px;
 
 .dropdown-list{
 max-height:180px;
-/*overflow-y:auto;*/
+overflow-y:auto;
 }
 
 .dropdown-item{
