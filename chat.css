@@ -46,7 +46,7 @@ font-weight:600;
 }
 
 .chat-list{
-overflow-y:auto;
+/*overflow-y:auto;*/
 flex:1;
 }
 
@@ -81,7 +81,7 @@ font-weight:600;
 
 .chat-messages{
 flex:1;
-overflow-y:auto;
+/*overflow-y:auto;*/
 padding:14px;
 background:#f9fbfa;
 z-index: 1;
@@ -149,7 +149,7 @@ z-index:9999;
 }
 
 .quote-picker input{
-width:100%;
+width:80%;
 padding:8px;
 margin-bottom:8px;
 border:1px solid #e1e8e3;
@@ -158,7 +158,7 @@ border-radius:6px;
 
 .dropdown-list{
 max-height:180px;
-overflow-y:auto;
+/*overflow-y:auto;*/
 }
 
 .dropdown-item{
