@@ -34,7 +34,7 @@ function renderChatList() {
     div.className = "chat-item";
     div.innerText = chat.Quote_Request_Number.display_value;
 
-    if (chat.Quote_Request.ID === selectedQuoteId) {
+    if (chat.Quote_Request_Number.ID === selectedQuoteId) {
       div.classList.add("active");
     }
 
