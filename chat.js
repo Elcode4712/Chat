@@ -15,7 +15,7 @@ ZOHO.CREATOR.init().then(() => {
 function loadChatSessions() {
    var config = {
   app_name: appName,
-  report_name: "Chat",
+  report_name: "All_Chats",
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
@@ -129,7 +129,7 @@ function selectQuote() {
 function createOrLoadChatSession() {
   var config = {
   app_name: appName,
-  report_name: "Chat",
+  report_name: "All_Chats",
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
@@ -177,7 +177,7 @@ function openExistingChat(id, number) {
 function loadMessages() {
   var config = {
   app_name: appName,
-  report_name: "Chat",
+  report_name: "All_Chats",
   criteria: `(Quote_Request_Number == "${selectedQuoteId}")`
 };
 ZOHO.CREATOR.DATA.getRecords(config).then(function (res) {
