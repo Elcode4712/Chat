@@ -32,7 +32,7 @@ function renderChatList() {
   chatsCache.forEach(chat => {
     const div = document.createElement("div");
     div.className = "chat-item";
-    div.innerText = chat.Quote_Request.display_value;
+    div.innerText = chat.Quote_Request_Number.display_value;
 
     if (chat.Quote_Request.ID === selectedQuoteId) {
       div.classList.add("active");
